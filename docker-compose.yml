@@ -1,0 +1,9 @@
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: telegram_admin_bot
+    restart: unless-stopped
+    volumes:
+      - .:/app

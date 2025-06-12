@@ -1,0 +1,10 @@
+{
+  "admin_token": "8175450516:AAH4ogMafqRCKmwU2lTFCCSsoUNfwc8I-WI",
+
+  "database_host": "88.201.161.234",
+  "database_port": "3145",
+  "database_user": "root",
+  "database_password": "root",
+  "database_database": "database"
+}
+
