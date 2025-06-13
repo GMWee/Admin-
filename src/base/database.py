@@ -57,16 +57,16 @@ class ProjectDatabase(Database):
 
 	"""API KEY"""
 	async def info_api_key(self, client_id: str):
-		return await self.execute_get_query("SELECT * FROM api_key WHERE client_id = $1", (client_id,))
+		return await self.execute_get_query("SELECT * FROM api_key WHERE client = $1", (client_id,))
 
 	async def add_api_key(self,client_id: str, key: str):
-		await self.execute_query("INSERT INTO api_key(client_id, key) VALUES ($1, $2)", (client_id, key,))
+		await self.execute_query("INSERT INTO api_key(client, api_key) VALUES ($1, $2)", (client_id, key,))
 		
 	async def api_key_print(self):
 		return await self.execute_get_query(f"SELECT * FROM api_key")
 		
 	async def delete_api_key(self, client_id: str):
-		await self.execute_query("DELETE FROM api_key WHERE client_id = CAST($1 AS TEXT)", (client_id,))
+		await self.execute_query("DELETE FROM api_key WHERE client = CAST($1 AS TEXT)", (client_id,))
 	"""Settings"""
 	async def set_ban(self, num: int, user_id: int):
 		await self.execute_query("UPDATE users SET ban = $1 WHERE id = $2", (num, user_id))

@@ -56,14 +56,14 @@ async def apikey_add_callback(callback: CallbackQuery, state: FSMContext):
 
 @router.message(SetState.api_key)
 async def apikey_add_message(message: Message, state: FSMContext):
-    client_id = message.text.strip()
+    client = message.text.strip()
     key = generate_api_key_random()
-    if await DATABASE.info_api_key(client_id):
+    if await DATABASE.info_api_key(client):
         await message.answer('*Название сервиса для генерации ключа занято*', parse_mode="Markdown")
         return
-    await DATABASE.add_api_key(client_id, key)
+    await DATABASE.add_api_key(client, key)
     await message.answer(
-        f"*Ключ добавлен*\n\nСервис: `{client_id}`\nКлюч: `{key}` ✅",
+        f"*Ключ добавлен*\n\nСервис: `{client}`\nКлюч: `{key}` ✅",
         reply_markup=kb.back_to_settings,
         parse_mode="Markdown"
     )
@@ -81,8 +81,8 @@ async def api_key_print(callback: CallbackQuery):
     text = ""
     for record in records:
         text += (
-            f"**Client ID:** `{record['client_id']}`\n"
-            f"**KEY:** `{record['key']}`\n\n"
+            f"**Client:** `{record['client']}`\n"
+            f"**KEY:** `{record['api_key']}`\n\n"
         )
     await callback.message.edit_text(text, parse_mode="Markdown")
 
@@ -99,8 +99,8 @@ async def apikey_delete_callback(callback: CallbackQuery, state: FSMContext):
     text = ""
     for record in records:
         text += (
-            f"**Client ID:** `{record['client_id']}`\n"
-            f"**KEY:** `{record['key']}`\n\n"
+            f"**Client ID:** `{record['client']}`\n"
+            f"**KEY:** `{record['api_key']}`\n\n"
         )
     await callback.message.edit_text(f'{text}\n*Введите client_id сервиса для удаления ключа:*', parse_mode="Markdown")
     await state.set_state(SetState.client_id)
